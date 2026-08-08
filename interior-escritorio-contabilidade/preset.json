@@ -1,0 +1,11 @@
+{
+  "name": "escritorio-contabilidade",
+  "description": "Escritorio de contabilidade - estilo corporativo moderno",
+  "colors": ["#1B2A41", "#F7F6F3", "#C9A876", "#3C3C3C", "#B08D57"],
+  "style": "corporate modern interior photography, clean lines, glass partitions, light oak wood, matte black metal accents",
+  "typography": "geometric sans-serif, minimal",
+  "lighting": "abundant natural light through floor-to-ceiling windows, neutral 4000K indirect artificial fill, no harsh shadows",
+  "mood": "professional, trustworthy, organized, welcoming",
+  "default_ratio": "3:2",
+  "default_resolution": "2K"
+}
