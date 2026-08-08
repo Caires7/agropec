@@ -16,12 +16,25 @@ Usage:
 import json
 import sys
 import os
+import platform
 from pathlib import Path
 
 SETTINGS_PATH = Path.home() / ".claude" / "settings.json"
 MCP_NAME = "nanobanana-mcp"
 MCP_PACKAGE = "@ycse/nanobanana-mcp"
 DEFAULT_MODEL = "gemini-3.1-flash-image-preview"
+
+
+def npx_command():
+    """Return the (command, base_args) needed to spawn npx on this platform.
+
+    On Windows, npx ships as npx.cmd/npx.ps1, not a bare executable, so
+    Node's child_process spawn fails with ENOENT unless invoked through
+    cmd.exe.
+    """
+    if platform.system() == "Windows":
+        return "cmd", ["/c", "npx"]
+    return "npx", []
 
 
 def load_settings() -> dict:
@@ -82,9 +95,10 @@ def setup_mcp(api_key: str) -> None:
     if "mcpServers" not in settings:
         settings["mcpServers"] = {}
 
+    command, base_args = npx_command()
     settings["mcpServers"][MCP_NAME] = {
-        "command": "npx",
-        "args": ["-y", MCP_PACKAGE],
+        "command": command,
+        "args": base_args + ["-y", MCP_PACKAGE],
         "env": {
             "GOOGLE_AI_API_KEY": api_key,
             "NANOBANANA_MODEL": DEFAULT_MODEL,

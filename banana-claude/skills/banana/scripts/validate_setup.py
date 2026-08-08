@@ -64,11 +64,17 @@ def main() -> int:
     if has_mcp:
         mcp = servers[MCP_NAME]
 
-        # 4. Command is npx
+        # 4. Command spawns npx (directly, or via cmd.exe wrapper on Windows,
+        # since Node cannot spawn npx.cmd/npx.ps1 directly there)
+        command = mcp.get("command", "")
+        args = mcp.get("args", [])
+        spawns_npx = command == "npx" or (
+            command.lower() in ("cmd", "cmd.exe") and "npx" in args
+        )
         results.append(check(
-            "Command is 'npx'",
-            mcp.get("command") == "npx",
-            mcp.get("command", "(missing)"),
+            "Command spawns npx",
+            spawns_npx,
+            f"{command} {' '.join(args)}".strip() or "(missing)",
         ))
 
         # 5. Package is correct
